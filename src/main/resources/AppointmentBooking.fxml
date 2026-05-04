@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.hospitalmanagmentsystem.controller.AppointmentController">
+
+    <Label text="📅 Book Appointment" styleClass="section-title">
+        <font><Font size="20"/></font>
+    </Label>
+
+    <GridPane hgap="20" vgap="15" alignment="CENTER">
+        <padding>
+            <Insets top="20" right="50" bottom="20" left="50"/>
+        </padding>
+
+        <Label text="Select Patient:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="patientCombo" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="250" promptText="Choose patient"/>
+
+        <Label text="Specialization:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="specializationCombo" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="250" promptText="Choose specialization"/>
+
+        <Label text="Appointment Time:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="timeCombo" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="250" editable="true"/>
+
+        <Button text="✅ Book Appointment" styleClass="action-button"
+                onAction="#handleBookAppointment" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label fx:id="statusLabel" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="status-label"/>
+    </GridPane>
+
+    <Separator/>
+
+    <VBox spacing="10">
+        <Label text="📋 Available Time Slots" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+        <Label text="9:00 AM, 10:00 AM, 11:00 AM, 2:00 PM, 3:00 PM, 4:00 PM" style="-fx-text-fill: #666;"/>
+        <Label text="Note: Each doctor can have max 10 appointments per day" style="-fx-text-fill: #e67e22; -fx-font-size: 11px;"/>
+    </VBox>
+</VBox>

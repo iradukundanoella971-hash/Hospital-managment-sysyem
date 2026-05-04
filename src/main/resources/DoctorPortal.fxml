@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.hospitalmanagmentsystem.controller.DoctorPortalController">
+
+    <Label text="🔐 Doctor Portal" styleClass="section-title">
+        <font><Font size="20"/></font>
+    </Label>
+
+    <!-- Login Section -->
+    <TitledPane text="Doctor Login" expanded="true" fx:id="loginPane">
+        <GridPane hgap="15" vgap="10" padding="15">
+            <Label text="Doctor Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="loginNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Dr. John Smith"/>
+
+            <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="loginPasswordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Button text="Login" styleClass="action-button" onAction="#handleLogin"
+                    GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label fx:id="loginStatusLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        </GridPane>
+    </TitledPane>
+
+    <!-- Doctor Dashboard (Shown after login) -->
+    <VBox spacing="15" fx:id="doctorDashboard" visible="false" managed="false">
+
+        <!-- Welcome Message -->
+        <Label fx:id="welcomeLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+        <!-- Appointments Section -->
+        <TitledPane text="📅 My Appointments" animated="false" expanded="true">
+            <VBox spacing="10">
+                <TableView fx:id="appointmentsTable" prefHeight="200">
+                    <columns>
+                        <TableColumn text="Patient Name" fx:id="colPatientName" prefWidth="200"/>
+                        <TableColumn text="Time" fx:id="colTime" prefWidth="150"/>
+                    </columns>
+                </TableView>
+                <Button text="Refresh Appointments" onAction="#refreshAppointments" styleClass="secondary-button"/>
+            </VBox>
+        </TitledPane>
+
+        <!-- Add Medical Record Section -->
+        <TitledPane text="📝 Add Medical Record" animated="false" expanded="true">
+            <GridPane hgap="15" vgap="10" padding="15">
+                <Label text="Select Patient:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="patientRecordCombo" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="250"/>
+
+                <Label text="Diagnosis:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="diagnosisField" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Diagnosis description"/>
+
+                <Label text="Medicine:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="medicineField" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Prescribed medicine"/>
+
+                <Button text="Add Medical Record" styleClass="action-button"
+                        onAction="#handleAddMedicalRecord" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <Label fx:id="recordStatusLabel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            </GridPane>
+        </TitledPane>
+
+        <!-- View Records Section -->
+        <TitledPane text="📋 View Patient Records" animated="false" expanded="true">
+            <VBox spacing="10">
+                <HBox spacing="10">
+                    <ComboBox fx:id="viewRecordPatientCombo" promptText="Select patient" HBox.hgrow="ALWAYS"/>
+                    <Button text="View Records" onAction="#handleViewRecords"/>
+                </HBox>
+                <ListView fx:id="recordsListView" prefHeight="150"/>
+            </VBox>
+        </TitledPane>
+
+        <Button text="Logout" styleClass="logout-button" onAction="#handleLogout"/>
+    </VBox>
+</VBox>

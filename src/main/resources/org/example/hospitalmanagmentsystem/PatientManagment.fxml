@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.hospitalmanagmentsystem.controller.PatientController">
+
+    <Label text="👤 Patient Management" styleClass="section-title">
+        <font><Font size="20"/></font>
+    </Label>
+
+    <!-- Add Patient Form -->
+    <TitledPane text="➕ Add New Patient" animated="false" expanded="false">
+        <GridPane hgap="15" vgap="10" padding="15">
+            <Label text="Patient ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="patientIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="P001"/>
+
+            <Label text="Full Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="patientNameField" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="John Doe"/>
+
+            <Label text="Age:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="patientAgeField" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="25"/>
+
+            <Label text="Location:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="locationField" GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="City, State"/>
+
+            <Label text="Phone:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="phoneField" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="+1234567890"/>
+
+            <Label text="Sex:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="sexCombo" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+            <Button text="Register Patient" styleClass="action-button"
+                    onAction="#handleAddPatient" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+            <Label fx:id="patientStatusLabel" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+        </GridPane>
+    </TitledPane>
+
+    <!-- Search Bar -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="🔍 Search:"/>
+        <TextField fx:id="searchField" promptText="Search by name or ID" HBox.hgrow="ALWAYS"/>
+        <Button text="Search" onAction="#handleSearch"/>
+        <Button text="Clear" onAction="#handleClearSearch"/>
+    </HBox>
+
+    <!-- Patients Table -->
+    <TableView fx:id="patientsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn text="ID" fx:id="colId" prefWidth="80"/>
+            <TableColumn text="Name" fx:id="colName" prefWidth="180"/>
+            <TableColumn text="Age" fx:id="colAge" prefWidth="60"/>
+            <TableColumn text="Location" fx:id="colLocation" prefWidth="150"/>
+            <TableColumn text="Phone" fx:id="colPhone" prefWidth="120"/>
+            <TableColumn text="Sex" fx:id="colSex" prefWidth="80"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="globalStatusLabel" styleClass="status-label"/>
+</VBox>

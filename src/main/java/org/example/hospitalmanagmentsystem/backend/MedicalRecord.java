@@ -1,8 +1,8 @@
 package org.example.hospitalmanagmentsystem.backend;
 
 public class MedicalRecord {
-    public String description;
-    public String medicine;
+    private String description;
+    private String medicine;
 
     public MedicalRecord(String description, String medicine) {
         this.description = description;
@@ -13,4 +13,7 @@ public class MedicalRecord {
         System.out.println("Diagnosis: " + description);
         System.out.println("Medicine: " + medicine);
     }
+
+    public String getDescription() { return description; }
+    public String getMedicine() { return medicine; }
 }

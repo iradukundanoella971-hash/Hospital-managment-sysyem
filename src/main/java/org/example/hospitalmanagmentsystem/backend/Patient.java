@@ -6,13 +6,23 @@ import java.util.List;
 public class Patient extends Person {
     private String id;
     private String location;
-    public List<MedicalRecord> records = new ArrayList<>();
+    private String phone;
+    private String sex;
+    private List<MedicalRecord> records = new ArrayList<>();
 
     public Patient(String id, String name, int age, String location, String phone, String sex) {
         super(name, age);
         this.id = id;
         this.location = location;
+        this.phone = phone;
+        this.sex = sex;
     }
+
+    public String getId() { return id; }
+    public String getLocation() { return location; }
+    public String getPhone() { return phone; }
+    public String getSex() { return sex; }
+    public List<MedicalRecord> getRecords() { return records; }
 
     public void addRecord(MedicalRecord record) {
         records.add(record);
@@ -31,6 +41,10 @@ public class Patient extends Person {
 
     @Override
     void displayInfo() {
-        System.out.println("Patient: " + getName() + ", Age: " + getAge());
+        System.out.println("Patient: " + getName() +
+                ", Age: " + getAge() +
+                ", Location: " + location +
+                ", Phone: " + phone +
+                ", Sex: " + sex);
     }
 }
