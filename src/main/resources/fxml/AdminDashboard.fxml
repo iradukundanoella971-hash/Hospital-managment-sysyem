@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.hospitalmanagmentsystem.controller.AdminDashboardController"
+            styleClass="root-pane">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="topbar">
+            <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+            <Label text="Admin Dashboard" styleClass="title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Refresh" onAction="#handleRefresh" styleClass="btn-secondary"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="btn-danger"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="14">
+            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+            <Label fx:id="summaryLabel" styleClass="feedback"/>
+            <TitledPane text="Create Doctor Account" expanded="true">
+                <GridPane hgap="10" vgap="10">
+                    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+                    <Label text="Name" GridPane.rowIndex="0"/>
+                    <TextField fx:id="doctorNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <Label text="Age" GridPane.rowIndex="1"/>
+                    <TextField fx:id="doctorAgeField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Label text="Specialization" GridPane.rowIndex="2"/>
+                    <TextField fx:id="doctorSpecField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <Label text="Username" GridPane.rowIndex="3"/>
+                    <TextField fx:id="doctorUserField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    <Label text="Password" GridPane.rowIndex="4"/>
+                    <PasswordField fx:id="doctorPassField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                    <Button text="Add Doctor" onAction="#handleAddDoctor" styleClass="btn-primary"
+                            GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                </GridPane>
+            </TitledPane>
+            <SplitPane dividerPositions="0.5">
+                <VBox spacing="8">
+                    <Label text="Doctors"/>
+                    <TableView fx:id="doctorsTable">
+                        <columns>
+                            <TableColumn text="ID" fx:id="doctorIdCol"/>
+                            <TableColumn text="Name" fx:id="doctorNameCol"/>
+                            <TableColumn text="Specialization" fx:id="doctorSpecCol"/>
+                        </columns>
+                    </TableView>
+                    <Button text="Remove Selected Doctor" onAction="#handleRemoveDoctor" styleClass="btn-danger"/>
+                </VBox>
+                <VBox spacing="8">
+                    <Label text="Patients"/>
+                    <TableView fx:id="patientsTable">
+                        <columns>
+                            <TableColumn text="ID" fx:id="patientIdCol"/>
+                            <TableColumn text="Name" fx:id="patientNameCol"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </SplitPane>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,46 @@
+.root-pane {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-background-color: #f4f7fb;
+}
+
+.topbar {
+    -fx-background-color: #1f3b5b;
+}
+
+.title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 8, 0, 0, 2);
+    -fx-max-width: 520;
+}
+
+.btn-primary {
+    -fx-background-color: #0b74de;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.btn-secondary {
+    -fx-background-color: #637083;
+    -fx-text-fill: white;
+}
+
+.btn-danger {
+    -fx-background-color: #c0392b;
+    -fx-text-fill: white;
+}
+
+.feedback {
+    -fx-text-fill: #174a7e;
+}
+
+.muted {
+    -fx-text-fill: #59677a;
+    -fx-font-size: 12px;
+}

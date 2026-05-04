@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.hospitalmanagmentsystem.controller.LoginController"
+            styleClass="root-pane">
+    <center>
+        <VBox alignment="CENTER" spacing="16" styleClass="card">
+            <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+            <Label text="Hospital Management System" styleClass="title"/>
+            <TextField fx:id="usernameField" promptText="Username"/>
+            <PasswordField fx:id="passwordField" promptText="Password"/>
+            <HBox spacing="10">
+                <Button text="Login" onAction="#handleLogin" styleClass="btn-primary"/>
+                <Button text="Register Patient" onAction="#handleGoRegister" styleClass="btn-secondary"/>
+            </HBox>
+            <Label fx:id="feedbackLabel" styleClass="feedback"/>
+            <Label text="Demo admin: admin/admin123 | Doctor: sarah/doctor123 | Patient: alice/patient123"
+                   wrapText="true" styleClass="muted"/>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,27 +1,27 @@
 package org.example.hospitalmanagmentsystem.ui;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
+import org.example.hospitalmanagmentsystem.component.DataLoader;
+import org.example.hospitalmanagmentsystem.component.HospitalContext;
 
 public class MainApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
-        Parent root = loader.load();
+    public void start(Stage primaryStage) {
+        HospitalContext context = HospitalContext.getInstance();
+        context.getPersistenceService().load(context.getHospital(), context.getAuthService());
+        if (context.getHospital().getDoctors().isEmpty() && context.getHospital().getPatients().isEmpty()) {
+            DataLoader.loadSampleData(context.getHospital(), context.getAuthService());
+            context.getPersistenceService().save(context.getHospital(), context.getAuthService());
+        }
 
-        Scene scene = new Scene(root, 1200, 700);
-        scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-
-        primaryStage.setTitle("Hospital Management System");
-        primaryStage.setScene(scene);
-        primaryStage.setMinWidth(1000);
-        primaryStage.setMinHeight(600);
-        primaryStage.show();
+        SceneNavigator.init(primaryStage);
+        SceneNavigator.navigate("/fxml/Login.fxml", "Hospital Management System");
+        primaryStage.setMinWidth(1100);
+        primaryStage.setMinHeight(700);
+        primaryStage.setOnCloseRequest(event ->
+                context.getPersistenceService().save(context.getHospital(), context.getAuthService()));
     }
 
     public static void main(String[] args) {

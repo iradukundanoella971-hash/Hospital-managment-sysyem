@@ -1,7 +1,13 @@
 package org.example.hospitalmanagmentsystem.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import org.example.hospitalmanagmentsystem.backend.Hospital;
+import org.example.hospitalmanagmentsystem.component.AuthService;
 import org.example.hospitalmanagmentsystem.component.DataLoader;
+import org.example.hospitalmanagmentsystem.component.HospitalContext;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,22 +15,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class MainViewController implements Initializable {
 
     @FXML private StackPane contentArea;
 
     private static Hospital hospital;
+    private static AuthService authService;
     private static MainViewController instance;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         instance = this;
-        hospital = new Hospital();
-        DataLoader.loadSampleData(hospital);
+        hospital = HospitalContext.getInstance().getHospital();
+        authService = HospitalContext.getInstance().getAuthService();
+        DataLoader.loadSampleData(hospital, authService);
         showDashboard();
     }
 
@@ -32,24 +36,28 @@ public class MainViewController implements Initializable {
         return hospital;
     }
 
+    public static AuthService getAuthService() {
+        return authService;
+    }
+
     public static void refreshData() {
         // Refresh any open views if needed
     }
 
     public void showDashboard() {
-        loadView("/fxml/Dashboard.fxml");
+        loadView("/Dashboard.fxml");
     }
 
     public void showDoctorManagement() {
-        loadView("/fxml/DoctorManagement.fxml");
+        loadView("/DoctorManagement.fxml");
     }
 
     public void showPatientManagement() {
-        loadView("/fxml/PatientManagement.fxml");
+        loadView("/PatientManagement.fxml");
     }
 
     public void showAppointmentBooking() {
-        loadView("/fxml/AppointmentBooking.fxml");
+        loadView("/AppointmentBooking.fxml");
     }
 
     public void showDoctorPortal() {

@@ -4,7 +4,7 @@ import org.example.hospitalmanagmentsystem.backend.*;
 
 public class DataLoader {
 
-    public static void loadSampleData(Hospital hospital) {
+    public static void loadSampleData(Hospital hospital, AuthService authService) {
         try {
             // Add sample doctors
             Doctor d1 = new Doctor("D001", "Dr. Sarah Johnson", 45, "Cardiology", "doctor123");
@@ -28,6 +28,14 @@ public class DataLoader {
             p1.addRecord(new MedicalRecord("Annual checkup - healthy", "None"));
             p2.addRecord(new MedicalRecord("High blood pressure", "Lisinopril 10mg"));
             p3.addRecord(new MedicalRecord("Flu symptoms", "Antiviral medication"));
+
+            authService.createAdmin("admin", "admin123");
+            authService.createDoctorAccount(d1, "sarah", "doctor123");
+            authService.createDoctorAccount(d2, "michael", "doctor123");
+            authService.createDoctorAccount(d3, "emily", "doctor123");
+            authService.createPatientAccount(p1, "alice", "patient123");
+            authService.createPatientAccount(p2, "bob", "patient123");
+            authService.createPatientAccount(p3, "charlie", "patient123");
 
         } catch (Exception e) {
             System.out.println("Sample data already exists or error: " + e.getMessage());
