@@ -7,18 +7,46 @@
             fx:controller="org.example.hospitalmanagmentsystem.controller.LoginController"
             styleClass="root-pane">
     <center>
-        <VBox alignment="CENTER" spacing="16" styleClass="card">
-            <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
-            <Label text="Hospital Management System" styleClass="title"/>
-            <TextField fx:id="usernameField" promptText="Username"/>
-            <PasswordField fx:id="passwordField" promptText="Password"/>
-            <HBox spacing="10">
-                <Button text="Login" onAction="#handleLogin" styleClass="btn-primary"/>
-                <Button text="Register Patient" onAction="#handleGoRegister" styleClass="btn-secondary"/>
+        <StackPane>
+            <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+            <HBox spacing="0" styleClass="card auth-card" alignment="CENTER">
+                <VBox spacing="10" styleClass="auth-panel">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <Label text="Login" styleClass="section-subtitle"/>
+                    <ComboBox fx:id="loginRoleCombo" promptText="Select role"/>
+                    <TextField fx:id="usernameField" promptText="Username"/>
+                    <PasswordField fx:id="passwordField" promptText="Password"/>
+                    <Button text="Sign In" onAction="#handleLogin" styleClass="btn-primary" maxWidth="1.7976931348623157E308"/>
+                </VBox>
+
+                <VBox spacing="10" styleClass="auth-panel">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <Label text="Register" styleClass="section-subtitle"/>
+                    <ComboBox fx:id="registerRoleCombo" promptText="Choose role"/>
+                    <TextField fx:id="registerNameField" promptText="Full name (doctor/patient)"/>
+                    <TextField fx:id="registerAgeField" promptText="Age (doctor/patient)"/>
+                    <TextField fx:id="registerSpecializationField" promptText="Specialization (doctor only)"/>
+                    <TextField fx:id="registerLocationField" promptText="Location (patient only)"/>
+                    <TextField fx:id="registerPhoneField" promptText="Phone (patient only)"/>
+                    <ComboBox fx:id="registerSexCombo" promptText="Sex (patient only)"/>
+                    <TextField fx:id="registerUsernameField" promptText="Username"/>
+                    <PasswordField fx:id="registerPasswordField" promptText="Password"/>
+                    <Button text="Create Account" onAction="#handleRegister" styleClass="btn-secondary" maxWidth="1.7976931348623157E308"/>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="8" styleClass="brand-panel">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <Label text="Hospital" styleClass="brand-title"/>
+                    <Label text="Management System" styleClass="brand-title"/>
+                    <Label text="Simple role-based login and registration" styleClass="muted"/>
+                </VBox>
             </HBox>
-            <Label fx:id="feedbackLabel" styleClass="feedback"/>
-            <Label text="Demo admin: admin/admin123 | Doctor: sarah/doctor123 | Patient: alice/patient123"
-                   wrapText="true" styleClass="muted"/>
-        </VBox>
+        </StackPane>
     </center>
+    <bottom>
+        <HBox alignment="CENTER">
+            <padding><Insets top="4" right="8" bottom="12" left="8"/></padding>
+            <Label fx:id="feedbackLabel" styleClass="feedback"/>
+        </HBox>
+    </bottom>
 </BorderPane>

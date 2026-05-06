@@ -1,5 +1,7 @@
 package org.example.hospitalmanagmentsystem.controller;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -7,6 +9,7 @@ import javafx.scene.control.*;
 import org.example.hospitalmanagmentsystem.backend.*;
 import org.example.hospitalmanagmentsystem.component.*;
 import org.example.hospitalmanagmentsystem.ui.SceneNavigator;
+import javafx.util.Duration;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,22 +26,22 @@ public class PatientDashboardController {
     @FXML private TableColumn<Appointment, String> apDoctorCol;
     @FXML private TableColumn<Appointment, String> apDateCol;
     @FXML private TableColumn<Appointment, String> apTimeCol;
-    @FXML private TextField regNameField;
-    @FXML private TextField regAgeField;
-    @FXML private TextField regLocationField;
-    @FXML private TextField regPhoneField;
-    @FXML private ComboBox<String> regSexCombo;
-    @FXML private TextField regUserField;
-    @FXML private PasswordField regPassField;
-    @FXML private Label registerFeedback;
+    @FXML private DatePicker rescheduleDatePicker;
+    @FXML private ComboBox<String> rescheduleTimeCombo;
 
     private final AppointmentService appointmentService = new AppointmentService();
     private Patient patient;
+    private Timeline refreshTimeline;
 
     @FXML
     public void initialize() {
-        regSexCombo.setItems(FXCollections.observableArrayList("Male", "Female", "Other"));
+        apDoctorCol.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getDoctorName()));
+        apDateCol.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(String.valueOf(c.getValue().getDate())));
+        apTimeCol.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(String.valueOf(c.getValue().getTimeValue())));
+
         timeCombo.setItems(FXCollections.observableArrayList(
+                appointmentService.getDefaultSlots().stream().map(LocalTime::toString).collect(Collectors.toList())));
+        rescheduleTimeCombo.setItems(FXCollections.observableArrayList(
                 appointmentService.getDefaultSlots().stream().map(LocalTime::toString).collect(Collectors.toList())));
         doctorCombo.setItems(FXCollections.observableArrayList(
                 HospitalContext.getInstance().getHospital().getDoctors().values().stream()
@@ -47,16 +50,17 @@ public class PatientDashboardController {
 
         UserAccount user = SessionManager.getInstance().getCurrentUser();
         if (user != null && user.getRole() == Role.PATIENT) {
-            patient = HospitalContext.getInstance().getHospital().getPatients().get(user.getLinkedId());
-            patientLabel.setText("Patient: " + patient.getName());
-            loadPatientViews();
+            patient = resolvePatientForUser(user);
+            if (patient != null) {
+                patientLabel.setText("Patient: " + patient.getName());
+                loadPatientViews();
+                startAutoRefresh();
+            } else {
+                patientLabel.setText("Patient account not linked. Please contact admin.");
+            }
         } else {
             patientLabel.setText("Guest mode: register a patient account");
         }
-
-        apDoctorCol.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getDoctorName()));
-        apDateCol.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(String.valueOf(c.getValue().getDate())));
-        apTimeCol.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(String.valueOf(c.getValue().getTimeValue())));
     }
 
     @FXML
@@ -78,27 +82,51 @@ public class PatientDashboardController {
     }
 
     @FXML
-    private void handleRegister() {
-        try {
-            String id = HospitalContext.getInstance().getIdGenerator().nextPatientId();
-            Patient p = new Patient(id, regNameField.getText(), Integer.parseInt(regAgeField.getText()), regLocationField.getText(), regPhoneField.getText(), regSexCombo.getValue());
-            HospitalContext.getInstance().getHospital().registerPatient(p);
-            HospitalContext.getInstance().getAuthService().createPatientAccount(p, regUserField.getText(), regPassField.getText());
-            HospitalContext.getInstance().getPersistenceService().save(HospitalContext.getInstance().getHospital(), HospitalContext.getInstance().getAuthService());
-            registerFeedback.setText("Registration successful. Login from Login screen.");
-        } catch (Exception e) {
-            registerFeedback.setText("Error: " + e.getMessage());
-        }
-    }
-
-    @FXML
     private void handleLogout() {
+        stopAutoRefresh();
         SessionManager.getInstance().logout();
         SceneNavigator.navigate("/fxml/Login.fxml", "Hospital Management System");
     }
 
     @FXML
+    private void handleCancelSelected() {
+        try {
+            Appointment selected = appointmentsTable.getSelectionModel().getSelectedItem();
+            if (selected == null) {
+                throw new InvalidDataException("Select an appointment first");
+            }
+            appointmentService.cancelAppointment(selected.getAppointmentId());
+            HospitalContext.getInstance().getPersistenceService().save(HospitalContext.getInstance().getHospital(), HospitalContext.getInstance().getAuthService());
+            bookingFeedback.setText("Appointment cancelled");
+            loadPatientViews();
+        } catch (Exception e) {
+            bookingFeedback.setText("Error: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleRescheduleSelected() {
+        try {
+            Appointment selected = appointmentsTable.getSelectionModel().getSelectedItem();
+            if (selected == null) {
+                throw new InvalidDataException("Select an appointment first");
+            }
+            appointmentService.rescheduleAppointment(
+                    selected.getAppointmentId(),
+                    rescheduleDatePicker.getValue(),
+                    LocalTime.parse(rescheduleTimeCombo.getValue())
+            );
+            HospitalContext.getInstance().getPersistenceService().save(HospitalContext.getInstance().getHospital(), HospitalContext.getInstance().getAuthService());
+            bookingFeedback.setText("Appointment rescheduled");
+            loadPatientViews();
+        } catch (Exception e) {
+            bookingFeedback.setText("Error: " + e.getMessage());
+        }
+    }
+
+    @FXML
     private void handleGoLogin() {
+        stopAutoRefresh();
         SceneNavigator.navigate("/fxml/Login.fxml", "Hospital Management System");
     }
 
@@ -113,6 +141,29 @@ public class PatientDashboardController {
             appointmentsTable.setItems(FXCollections.observableArrayList(
                     HospitalContext.getInstance().getHospital().getAppointmentsForPatient(patient.getId())
             ));
+            appointmentsTable.refresh();
         });
+    }
+
+    private Patient resolvePatientForUser(UserAccount user) {
+        Patient byId = HospitalContext.getInstance().getHospital().getPatients().get(user.getLinkedId());
+        if (byId != null) {
+            return byId;
+        }
+        return HospitalContext.getInstance().getHospital().getPatientByName(user.getLinkedId());
+    }
+
+    private void startAutoRefresh() {
+        stopAutoRefresh();
+        refreshTimeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> loadPatientViews()));
+        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+        refreshTimeline.play();
+    }
+
+    private void stopAutoRefresh() {
+        if (refreshTimeline != null) {
+            refreshTimeline.stop();
+            refreshTimeline = null;
+        }
     }
 }

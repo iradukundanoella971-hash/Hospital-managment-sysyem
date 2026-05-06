@@ -14,6 +14,7 @@ import org.example.hospitalmanagmentsystem.component.SessionManager;
 import org.example.hospitalmanagmentsystem.ui.SceneNavigator;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 public class DoctorDashboardController {
     @FXML private Label doctorLabel;
@@ -50,8 +51,10 @@ public class DoctorDashboardController {
             Patient p = HospitalContext.getInstance().getHospital().getPatients().get(patientIdField.getText());
             if (p == null) throw new IllegalArgumentException("Patient ID not found");
             p.addRecord(new MedicalRecord(diagnosisArea.getText(), medicineField.getText()));
-            feedbackLabel.setText("Record and prescription saved.");
+            markAppointmentCompleted(p.getId());
+            feedbackLabel.setText("Record saved and appointment marked as COMPLETED.");
             HospitalContext.getInstance().getPersistenceService().save(HospitalContext.getInstance().getHospital(), HospitalContext.getInstance().getAuthService());
+            refreshToday();
         } catch (Exception e) {
             feedbackLabel.setText("Error: " + e.getMessage());
         }
@@ -88,5 +91,15 @@ public class DoctorDashboardController {
                         .filter(a -> LocalDate.now().equals(a.getDate()))
                         .toList()
         )));
+    }
+
+    private void markAppointmentCompleted(String patientId) {
+        HospitalContext.getInstance().getHospital().getAppointmentsForDoctor(doctor.getDoctorId()).stream()
+                .filter(a -> a.getPatient().getId().equalsIgnoreCase(patientId))
+                .filter(a -> "BOOKED".equalsIgnoreCase(a.getStatus()))
+                .filter(a -> a.getDate() != null && !a.getDate().isAfter(LocalDate.now()))
+                .max(Comparator.comparing(Appointment::getDate)
+                        .thenComparing(Appointment::getTimeValue))
+                .ifPresent(a -> a.setStatus("COMPLETED"));
     }
 }

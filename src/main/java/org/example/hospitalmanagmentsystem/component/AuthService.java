@@ -26,6 +26,14 @@ public class AuthService {
         return account;
     }
 
+    public UserAccount login(String username, String password, Role role) {
+        UserAccount account = login(username, password);
+        if (account.getRole() != role) {
+            throw new InvalidDataException("This account is not registered as " + role.name());
+        }
+        return account;
+    }
+
     public UserAccount createAdmin(String username, String password) {
         return createUser(username, password, Role.ADMIN, "ADMIN");
     }

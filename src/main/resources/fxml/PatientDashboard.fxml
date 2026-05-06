@@ -38,6 +38,13 @@
                                 <TableColumn text="Time" fx:id="apTimeCol"/>
                             </columns>
                         </TableView>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Button text="Cancel Selected" onAction="#handleCancelSelected" styleClass="btn-danger"/>
+                            <Label text="Reschedule:"/>
+                            <DatePicker fx:id="rescheduleDatePicker"/>
+                            <ComboBox fx:id="rescheduleTimeCombo" promptText="Time"/>
+                            <Button text="Apply" onAction="#handleRescheduleSelected" styleClass="btn-secondary"/>
+                        </HBox>
                     </VBox>
                 </Tab>
                 <Tab text="Medical History" closable="false">
@@ -45,28 +52,6 @@
                         <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
                         <ListView fx:id="recordsList"/>
                     </VBox>
-                </Tab>
-                <Tab text="Register" closable="false">
-                    <GridPane hgap="10" vgap="10">
-                        <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
-                        <Label text="Full Name" GridPane.rowIndex="0"/>
-                        <TextField fx:id="regNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                        <Label text="Age" GridPane.rowIndex="1"/>
-                        <TextField fx:id="regAgeField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <Label text="Location" GridPane.rowIndex="2"/>
-                        <TextField fx:id="regLocationField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <Label text="Phone" GridPane.rowIndex="3"/>
-                        <TextField fx:id="regPhoneField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                        <Label text="Sex" GridPane.rowIndex="4"/>
-                        <ComboBox fx:id="regSexCombo" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                        <Label text="Username" GridPane.rowIndex="5"/>
-                        <TextField fx:id="regUserField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                        <Label text="Password" GridPane.rowIndex="6"/>
-                        <PasswordField fx:id="regPassField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-                        <Button text="Register" onAction="#handleRegister" styleClass="btn-primary"
-                                GridPane.columnIndex="1" GridPane.rowIndex="7"/>
-                        <Label fx:id="registerFeedback" GridPane.columnIndex="1" GridPane.rowIndex="8" styleClass="feedback"/>
-                    </GridPane>
                 </Tab>
             </tabs>
         </TabPane>

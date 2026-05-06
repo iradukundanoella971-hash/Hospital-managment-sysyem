@@ -65,6 +65,16 @@ public class Appointment {
         this.followUpNotes = followUpNotes;
     }
 
+    public void reschedule(LocalDate newDate, LocalTime newTime) {
+        if (newDate == null || newTime == null) {
+            throw new InvalidDataException("Date and time are required");
+        }
+        this.date = newDate;
+        this.timeValue = newTime;
+        this.time = newTime.toString();
+        this.status = "BOOKED";
+    }
+
     public void showAppointment() {
         System.out.println("Time: " + time);
         System.out.println("Doctor: " + doctor.getName());
