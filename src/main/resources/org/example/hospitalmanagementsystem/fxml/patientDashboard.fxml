@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.hospitalmanagementsystem.controller.PatientController"
+            stylesheets="@../css/style.css"
+            styleClass="root-pane">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" spacing="5" minWidth="200">
+            <padding><Insets top="20" bottom="20" left="10" right="10"/></padding>
+            <Label text="🏥 Patient Panel" styleClass="sidebar-title"/>
+            <Label fx:id="welcomeLabel" text="Welcome!" styleClass="sidebar-welcome"/>
+            <Separator/>
+            <Button text="📊  Dashboard"      styleClass="sidebar-btn" maxWidth="Infinity" onAction="#showDashboard"/>
+            <Button text="👨⚕️  Doctors"        styleClass="sidebar-btn" maxWidth="Infinity" onAction="#showDoctors"/>
+            <Button text="📅  Appointments"    styleClass="sidebar-btn" maxWidth="Infinity" onAction="#showAppointments"/>
+            <Button text="📋  Medical History" styleClass="sidebar-btn" maxWidth="Infinity" onAction="#showHistory"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="🚪  Logout" styleClass="sidebar-btn-logout" maxWidth="Infinity" onAction="#handleLogout"/>
+        </VBox>
+    </left>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <StackPane styleClass="content-area">
+
+            <!-- PANEL 1: Dashboard -->
+            <VBox fx:id="dashboardPanel" spacing="25" visible="true" managed="true">
+                <padding><Insets top="30" left="30" right="30" bottom="30"/></padding>
+                <Label text="Patient Dashboard" styleClass="page-title"/>
+                <HBox spacing="20">
+                    <VBox styleClass="stat-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="📅" styleClass="stat-icon"/>
+                        <Label text="My Appointments" styleClass="stat-label"/>
+                        <Label fx:id="myAppointmentsLabel" text="0" styleClass="stat-number"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="📋" styleClass="stat-icon"/>
+                        <Label text="Medical Records" styleClass="stat-label"/>
+                        <Label fx:id="myRecordsLabel" text="0" styleClass="stat-number"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- PANEL 2: View Doctors -->
+            <VBox fx:id="doctorPanel" spacing="15" visible="false" managed="false">
+                <padding><Insets top="25" left="25" right="25" bottom="25"/></padding>
+                <Label text="Available Doctors" styleClass="page-title"/>
+                <TableView fx:id="doctorTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colDoctorName"     text="Doctor Name"    prefWidth="200"/>
+                        <TableColumn fx:id="colDoctorSpec"     text="Specialization" prefWidth="180"/>
+                        <TableColumn fx:id="colDoctorLocation" text="Location"       prefWidth="180"/>
+                    </columns>
+                    <placeholder><Label text="No doctors available."/></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- PANEL 3: Appointments -->
+            <VBox fx:id="appointmentPanel" spacing="15" visible="false" managed="false">
+                <padding><Insets top="25" left="25" right="25" bottom="25"/></padding>
+                <Label text="Appointments" styleClass="page-title"/>
+
+                <VBox styleClass="form-card" spacing="14">
+                    <Label text="Book a New Appointment" styleClass="form-section-title"/>
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Select Doctor ID" styleClass="field-label"/>
+                            <ComboBox fx:id="doctorCombo" promptText="Choose doctor..."
+                                      styleClass="combo-style" maxWidth="Infinity"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Date (YYYY-MM-DD)" styleClass="field-label"/>
+                            <TextField fx:id="apptDateField" promptText="e.g. 2024-12-15"
+                                       styleClass="text-field-style"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Time (HH:MM)" styleClass="field-label"/>
+                            <TextField fx:id="apptTimeField" promptText="e.g. 09:00"
+                                       styleClass="text-field-style"/>
+                        </VBox>
+                    </HBox>
+                    <Label fx:id="apptMessageLabel" text="" styleClass="error-label"/>
+                    <Button text="📅 Book Appointment" styleClass="btn-success"
+                            onAction="#handleBookAppointment"/>
+                </VBox>
+
+                <Label text="My Appointments" styleClass="form-section-title"/>
+                <TableView fx:id="appointmentTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colApptId"      text="ID"        prefWidth="60"/>
+                        <TableColumn fx:id="colApptDoctor"  text="Doctor ID" prefWidth="120"/>
+                        <TableColumn fx:id="colApptDate"    text="Date"      prefWidth="130"/>
+                        <TableColumn fx:id="colApptTime"    text="Time"      prefWidth="110"/>
+                        <TableColumn fx:id="colApptStatus"  text="Status"    prefWidth="110"/>
+                    </columns>
+                    <placeholder><Label text="No appointments yet."/></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- PANEL 4: Medical History -->
+            <VBox fx:id="historyPanel" spacing="15" visible="false" managed="false">
+                <padding><Insets top="25" left="25" right="25" bottom="25"/></padding>
+                <Label text="My Medical History" styleClass="page-title"/>
+                <TableView fx:id="historyTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colHistId"        text="ID"         prefWidth="60"/>
+                        <TableColumn fx:id="colHistDoctor"    text="Doctor ID"  prefWidth="110"/>
+                        <TableColumn fx:id="colHistDiagnosis" text="Diagnosis"  prefWidth="180"/>
+                        <TableColumn fx:id="colHistMedicine"  text="Medicine"   prefWidth="180"/>
+                        <TableColumn fx:id="colHistFollowUp"  text="Follow-Up"  prefWidth="160"/>
+                        <TableColumn fx:id="colHistNextAppt"  text="Next Appt"  prefWidth="120"/>
+                    </columns>
+                    <placeholder><Label text="No medical records yet."/></placeholder>
+                </TableView>
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>

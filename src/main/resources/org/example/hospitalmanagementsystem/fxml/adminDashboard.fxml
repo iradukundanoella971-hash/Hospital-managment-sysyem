@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.hospitalmanagementsystem.controller.AdminController"
+            stylesheets="@../css/style.css"
+            styleClass="root-pane">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" spacing="5" minWidth="200">
+            <padding><Insets top="20" bottom="20" left="10" right="10"/></padding>
+            <Label text="🏥 Admin Panel" styleClass="sidebar-title"/>
+            <Label fx:id="welcomeLabel" text="Welcome!" styleClass="sidebar-welcome"/>
+            <Separator/>
+            <Button text="📊  Dashboard"       styleClass="sidebar-btn" maxWidth="Infinity" onAction="#showDashboard"/>
+            <Button text="👨⚕️  Manage Doctors"  styleClass="sidebar-btn" maxWidth="Infinity" onAction="#showDoctors"/>
+            <Button text="🧑  View Patients"    styleClass="sidebar-btn" maxWidth="Infinity" onAction="#showPatients"/>
+            <Button text="📅  Appointments"     styleClass="sidebar-btn" maxWidth="Infinity" onAction="#showAppointments"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="🚪  Logout" styleClass="sidebar-btn-logout" maxWidth="Infinity" onAction="#handleLogout"/>
+        </VBox>
+    </left>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <StackPane styleClass="content-area">
+
+            <!-- PANEL 1: Dashboard -->
+            <VBox fx:id="dashboardPanel" spacing="25" visible="true" managed="true">
+                <padding><Insets top="30" left="30" right="30" bottom="30"/></padding>
+                <Label text="Dashboard Overview" styleClass="page-title"/>
+                <HBox spacing="20">
+                    <VBox styleClass="stat-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="👨⚕️" styleClass="stat-icon"/>
+                        <Label text="Total Doctors" styleClass="stat-label"/>
+                        <Label fx:id="totalDoctorsLabel" text="0" styleClass="stat-number"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="🧑" styleClass="stat-icon"/>
+                        <Label text="Total Patients" styleClass="stat-label"/>
+                        <Label fx:id="totalPatientsLabel" text="0" styleClass="stat-number"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="📅" styleClass="stat-icon"/>
+                        <Label text="Total Appointments" styleClass="stat-label"/>
+                        <Label fx:id="totalAppointmentsLabel" text="0" styleClass="stat-number"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- PANEL 2: Manage Doctors -->
+            <VBox fx:id="doctorPanel" spacing="15" visible="false" managed="false">
+                <padding><Insets top="25" left="25" right="25" bottom="25"/></padding>
+                <Label text="Manage Doctors" styleClass="page-title"/>
+
+                <!-- Search -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="doctorSearchField" promptText="Search by name or ID..."
+                               styleClass="text-field-style" HBox.hgrow="ALWAYS"/>
+                    <Button text="Search" styleClass="btn-primary" onAction="#handleSearchDoctor"/>
+                </HBox>
+
+                <!-- Form -->
+                <VBox styleClass="form-card" spacing="12">
+                    <Label text="Doctor Details" styleClass="form-section-title"/>
+                    <GridPane hgap="15" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
+
+                        <Label text="Doctor ID *"     GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="field-label"/>
+                        <TextField fx:id="doctorIdField" promptText="e.g. D001"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="text-field-style"/>
+
+                        <Label text="Full Name *"     GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="field-label"/>
+                        <TextField fx:id="doctorNameField" promptText="Full name"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="text-field-style"/>
+
+                        <Label text="Phone Number"    GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="field-label"/>
+                        <TextField fx:id="doctorPhoneField" promptText="Phone"
+                                   GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="text-field-style"/>
+
+                        <Label text="Specialization"  GridPane.columnIndex="3" GridPane.rowIndex="0" styleClass="field-label"/>
+                        <TextField fx:id="doctorSpecField" promptText="e.g. Cardiology"
+                                   GridPane.columnIndex="3" GridPane.rowIndex="1" styleClass="text-field-style"/>
+
+                        <Label text="Location"        GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="field-label"/>
+                        <TextField fx:id="doctorLocationField" promptText="City"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="text-field-style"/>
+
+                        <Label text="Age * (19-60)"   GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="field-label"/>
+                        <TextField fx:id="doctorAgeField" promptText="Age"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="text-field-style"/>
+
+                        <Label text="Username *"      GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="field-label"/>
+                        <TextField fx:id="doctorUsernameField" promptText="Username"
+                                   GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="text-field-style"/>
+
+                        <Label text="Password *"      GridPane.columnIndex="3" GridPane.rowIndex="2" styleClass="field-label"/>
+                        <PasswordField fx:id="doctorPasswordField" promptText="Password"
+                                       GridPane.columnIndex="3" GridPane.rowIndex="3" styleClass="text-field-style"/>
+                    </GridPane>
+
+                    <Label fx:id="doctorMessageLabel" text="" styleClass="error-label"/>
+
+                    <HBox spacing="10">
+                        <Button text="➕ Add Doctor"  styleClass="btn-success" onAction="#handleAddDoctor"/>
+                        <Button text="✏️ Update"      styleClass="btn-primary" onAction="#handleUpdateDoctor"/>
+                        <Button text="🗑️ Delete"      styleClass="btn-danger"  onAction="#handleDeleteDoctor"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Table -->
+                <TableView fx:id="doctorTable" VBox.vgrow="ALWAYS" onMouseClicked="#handleSelectDoctor">
+                    <columns>
+                        <TableColumn fx:id="colDoctorId"       text="Doctor ID"      prefWidth="90"/>
+                        <TableColumn fx:id="colDoctorName"     text="Name"           prefWidth="150"/>
+                        <TableColumn fx:id="colDoctorPhone"    text="Phone"          prefWidth="110"/>
+                        <TableColumn fx:id="colDoctorSpec"     text="Specialization" prefWidth="130"/>
+                        <TableColumn fx:id="colDoctorLocation" text="Location"       prefWidth="110"/>
+                        <TableColumn fx:id="colDoctorAge"      text="Age"            prefWidth="60"/>
+                        <TableColumn fx:id="colDoctorUsername" text="Username"       prefWidth="110"/>
+                    </columns>
+                    <placeholder><Label text="No doctors found."/></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- PANEL 3: View Patients -->
+            <VBox fx:id="patientPanel" spacing="15" visible="false" managed="false">
+                <padding><Insets top="25" left="25" right="25" bottom="25"/></padding>
+                <Label text="All Patients" styleClass="page-title"/>
+                <TableView fx:id="patientTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colPatientId"       text="Patient ID" prefWidth="100"/>
+                        <TableColumn fx:id="colPatientName"     text="Name"       prefWidth="200"/>
+                        <TableColumn fx:id="colPatientLocation" text="Location"   prefWidth="150"/>
+                        <TableColumn fx:id="colPatientUsername" text="Username"   prefWidth="150"/>
+                    </columns>
+                    <placeholder><Label text="No patients found."/></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- PANEL 4: View Appointments -->
+            <VBox fx:id="appointmentPanel" spacing="15" visible="false" managed="false">
+                <padding><Insets top="25" left="25" right="25" bottom="25"/></padding>
+                <Label text="All Appointments" styleClass="page-title"/>
+                <TableView fx:id="appointmentTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colApptId"      text="ID"         prefWidth="60"/>
+                        <TableColumn fx:id="colApptDoctor"  text="Doctor ID"  prefWidth="110"/>
+                        <TableColumn fx:id="colApptPatient" text="Patient ID" prefWidth="110"/>
+                        <TableColumn fx:id="colApptDate"    text="Date"       prefWidth="120"/>
+                        <TableColumn fx:id="colApptTime"    text="Time"       prefWidth="100"/>
+                        <TableColumn fx:id="colApptStatus"  text="Status"     prefWidth="110"/>
+                    </columns>
+                    <placeholder><Label text="No appointments found."/></placeholder>
+                </TableView>
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>

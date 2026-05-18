@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.hospitalmanagementsystem.controller.LoginController"
+            stylesheets="@../css/style.css"
+            styleClass="root-pane">
+
+    <center>
+        <VBox alignment="CENTER">
+            <VBox styleClass="login-card" alignment="CENTER" spacing="18" maxWidth="420">
+                <padding><Insets top="40" bottom="40" left="50" right="50"/></padding>
+
+                <Label fx:id="titleLabel" text="Login" styleClass="login-title"/>
+                <Label text="Enter your credentials to continue" styleClass="login-subtitle"/>
+
+                <VBox spacing="5">
+                    <Label text="Username" styleClass="field-label"/>
+                    <TextField fx:id="usernameField" promptText="Enter username"
+                               styleClass="text-field-style"/>
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Password" styleClass="field-label"/>
+                    <PasswordField fx:id="passwordField" promptText="Enter password"
+                                   styleClass="text-field-style"/>
+                </VBox>
+
+                <Label fx:id="messageLabel" text="" styleClass="error-label" wrapText="true"/>
+
+                <Button text="Login" styleClass="btn-primary" onAction="#handleLogin"
+                        maxWidth="Infinity"/>
+                <Button text="← Back to Home" styleClass="btn-secondary" onAction="#handleBack"
+                        maxWidth="Infinity"/>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

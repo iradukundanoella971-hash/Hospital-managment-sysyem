@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.hospitalmanagementsystem.controller.SignupController"
+            stylesheets="@../css/style.css"
+            styleClass="root-pane">
+
+    <center>
+        <VBox alignment="CENTER">
+            <VBox styleClass="login-card" alignment="CENTER" spacing="16" maxWidth="440">
+                <padding><Insets top="35" bottom="35" left="50" right="50"/></padding>
+
+                <Label text="Patient Sign Up" styleClass="login-title"/>
+                <Label text="Create your patient account" styleClass="login-subtitle"/>
+
+                <VBox spacing="5">
+                    <Label text="Patient ID *" styleClass="field-label"/>
+                    <TextField fx:id="patientIdField" promptText="e.g. P001"
+                               styleClass="text-field-style"/>
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Full Name *" styleClass="field-label"/>
+                    <TextField fx:id="nameField" promptText="Enter full name"
+                               styleClass="text-field-style"/>
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Location" styleClass="field-label"/>
+                    <TextField fx:id="locationField" promptText="City / Address"
+                               styleClass="text-field-style"/>
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Username *" styleClass="field-label"/>
+                    <TextField fx:id="usernameField" promptText="Choose a username"
+                               styleClass="text-field-style"/>
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Password *" styleClass="field-label"/>
+                    <PasswordField fx:id="passwordField" promptText="Choose a password"
+                                   styleClass="text-field-style"/>
+                </VBox>
+
+                <Label fx:id="messageLabel" text="" styleClass="error-label" wrapText="true"/>
+
+                <Button text="Create Account" styleClass="btn-primary" onAction="#handleSignup"
+                        maxWidth="Infinity"/>
+                <Button text="← Back to Home" styleClass="btn-secondary" onAction="#handleBack"
+                        maxWidth="Infinity"/>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>
