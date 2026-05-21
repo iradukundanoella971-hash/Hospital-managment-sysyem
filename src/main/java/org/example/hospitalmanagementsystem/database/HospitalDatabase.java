@@ -9,32 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * HospitalDatabase.java
- *
- * This class contains ALL database operations for the Hospital System.
- * Every method talks to PostgreSQL using PreparedStatement with ? placeholders.
- *
- * Controllers call these methods instead of writing SQL themselves.
- *
- * Sections:
- *  1. Admin
- *  2. Doctor
- *  3. Patient
- *  4. Appointment
- *  5. Medical Record
- *  6. Dashboard counts
- */
 public class HospitalDatabase {
-
-    // =========================================================================
-    // 1. ADMIN
-    // =========================================================================
-
-    /**
-     * Checks if the username and password match a row in the admin table.
-     * Returns true if login is valid, false otherwise.
-     */
     public static boolean loginAdmin(String username, String password) throws SQLException {
         String query = "SELECT id FROM admin WHERE username = ? AND password = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -46,13 +21,6 @@ public class HospitalDatabase {
         }
     }
 
-    // =========================================================================
-    // 2. DOCTOR
-    // =========================================================================
-
-    /**
-     * Checks if the username and password match a row in the doctor table.
-     */
     public static boolean loginDoctor(String username, String password) throws SQLException {
         String query = "SELECT id FROM doctor WHERE username = ? AND password = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -63,11 +31,6 @@ public class HospitalDatabase {
             return rs.next();
         }
     }
-
-    /**
-     * Returns all doctors from the database.
-     * If searchText is not empty, filters by name or doctor_id.
-     */
     public static List<Doctor> getAllDoctors(String searchText) throws SQLException {
         List<Doctor> list = new ArrayList<>();
 
@@ -92,10 +55,7 @@ public class HospitalDatabase {
         return list;
     }
 
-    /**
-     * Returns the doctor_id for a given username.
-     * Used by DoctorController after login.
-     */
+
     public static String getDoctorIdByUsername(String username) throws SQLException {
         String query = "SELECT doctor_id FROM doctor WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -107,9 +67,6 @@ public class HospitalDatabase {
         return null;
     }
 
-    /**
-     * Inserts a new doctor into the database.
-     */
     public static void insertDoctor(Doctor d) throws SQLException {
         String query = """
             INSERT INTO doctor (doctor_id, name, phone_number, specialization, location, age, username, password)
@@ -129,9 +86,6 @@ public class HospitalDatabase {
         }
     }
 
-    /**
-     * Updates an existing doctor row identified by doctor_id.
-     */
     public static void updateDoctor(Doctor d) throws SQLException {
         String query = """
             UPDATE doctor
@@ -151,10 +105,6 @@ public class HospitalDatabase {
             ps.executeUpdate();
         }
     }
-
-    /**
-     * Deletes a doctor by doctor_id.
-     */
     public static void deleteDoctor(String doctorId) throws SQLException {
         String query = "DELETE FROM doctor WHERE doctor_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -164,13 +114,6 @@ public class HospitalDatabase {
         }
     }
 
-    // =========================================================================
-    // 3. PATIENT
-    // =========================================================================
-
-    /**
-     * Checks if the username and password match a row in the patient table.
-     */
     public static boolean loginPatient(String username, String password) throws SQLException {
         String query = "SELECT id FROM patient WHERE username = ? AND password = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -181,10 +124,6 @@ public class HospitalDatabase {
             return rs.next();
         }
     }
-
-    /**
-     * Returns all patients from the database.
-     */
     public static List<Patient> getAllPatients() throws SQLException {
         List<Patient> list = new ArrayList<>();
         String query = "SELECT * FROM patient ORDER BY name";
@@ -197,11 +136,6 @@ public class HospitalDatabase {
         }
         return list;
     }
-
-    /**
-     * Returns the patient_id for a given username.
-     * Used by PatientController after login.
-     */
     public static String getPatientIdByUsername(String username) throws SQLException {
         String query = "SELECT patient_id FROM patient WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -212,10 +146,6 @@ public class HospitalDatabase {
         }
         return null;
     }
-
-    /**
-     * Inserts a new patient (self-registration / signup).
-     */
     public static void insertPatient(Patient p) throws SQLException {
         String query = """
             INSERT INTO patient (patient_id, name, location, username, password)
@@ -231,10 +161,6 @@ public class HospitalDatabase {
             ps.executeUpdate();
         }
     }
-
-    /**
-     * Returns all patients who have at least one appointment with the given doctor.
-     */
     public static List<Patient> getPatientsByDoctor(String doctorId) throws SQLException {
         List<Patient> list = new ArrayList<>();
         String query = """
@@ -255,13 +181,6 @@ public class HospitalDatabase {
         return list;
     }
 
-    // =========================================================================
-    // 4. APPOINTMENT
-    // =========================================================================
-
-    /**
-     * Returns all appointments in the system (used by Admin).
-     */
     public static List<Appointment> getAllAppointments() throws SQLException {
         List<Appointment> list = new ArrayList<>();
         String query = "SELECT * FROM appointment ORDER BY appointment_date, appointment_time";
@@ -274,10 +193,6 @@ public class HospitalDatabase {
         }
         return list;
     }
-
-    /**
-     * Returns all appointments for a specific doctor.
-     */
     public static List<Appointment> getAppointmentsByDoctor(String doctorId) throws SQLException {
         List<Appointment> list = new ArrayList<>();
         String query = "SELECT * FROM appointment WHERE doctor_id = ? ORDER BY appointment_date, appointment_time";
@@ -291,10 +206,6 @@ public class HospitalDatabase {
         }
         return list;
     }
-
-    /**
-     * Returns all appointments for a specific patient.
-     */
     public static List<Appointment> getAppointmentsByPatient(String patientId) throws SQLException {
         List<Appointment> list = new ArrayList<>();
         String query = "SELECT * FROM appointment WHERE patient_id = ? ORDER BY appointment_date, appointment_time";
@@ -308,10 +219,6 @@ public class HospitalDatabase {
         }
         return list;
     }
-
-    /**
-     * Returns all appointment IDs for a specific doctor (used to fill ComboBox).
-     */
     public static List<String> getAppointmentIdsByDoctor(String doctorId) throws SQLException {
         List<String> ids = new ArrayList<>();
         String query = "SELECT id FROM appointment WHERE doctor_id = ? ORDER BY id";
@@ -325,10 +232,6 @@ public class HospitalDatabase {
         }
         return ids;
     }
-
-    /**
-     * Returns all doctor IDs (used to fill ComboBox in patient booking form).
-     */
     public static List<String> getAllDoctorIds() throws SQLException {
         List<String> ids = new ArrayList<>();
         String query = "SELECT doctor_id FROM doctor ORDER BY doctor_id";
@@ -341,12 +244,6 @@ public class HospitalDatabase {
         }
         return ids;
     }
-
-    /**
-     * Inserts a new appointment.
-     * Checks for duplicate booking before inserting.
-     * Returns true if booked successfully, false if already exists.
-     */
     public static boolean insertAppointment(String doctorId, String patientId,
                                             String date, String time) throws SQLException {
         // Check for duplicate
@@ -365,7 +262,7 @@ public class HospitalDatabase {
                 }
             }
 
-            // Insert the appointment
+
             String insert = """
                 INSERT INTO appointment (doctor_id, patient_id, appointment_date, appointment_time)
                 VALUES (?, ?, ?, ?)
@@ -381,9 +278,9 @@ public class HospitalDatabase {
         }
     }
 
-    /**
-     * Returns the patient_id linked to a given appointment id.
-     */
+
+     //Returns the patient_id linked to a given appointment id.
+
     public static String getPatientIdByAppointment(int appointmentId) throws SQLException {
         String query = "SELECT patient_id FROM appointment WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -394,14 +291,9 @@ public class HospitalDatabase {
         }
         return null;
     }
-
-    // =========================================================================
     // 5. MEDICAL RECORD
-    // =========================================================================
+    //Returns all medical records written by a specific doctor.
 
-    /**
-     * Returns all medical records written by a specific doctor.
-     */
     public static List<MedicalRecord> getRecordsByDoctor(String doctorId) throws SQLException {
         List<MedicalRecord> list = new ArrayList<>();
         String query = "SELECT * FROM medical_record WHERE doctor_id = ? ORDER BY id DESC";
@@ -416,9 +308,8 @@ public class HospitalDatabase {
         return list;
     }
 
-    /**
-     * Returns all medical records for a specific patient (their history).
-     */
+    //Returns all medical records for a specific patient (their history).
+
     public static List<MedicalRecord> getRecordsByPatient(String patientId) throws SQLException {
         List<MedicalRecord> list = new ArrayList<>();
         String query = "SELECT * FROM medical_record WHERE patient_id = ? ORDER BY id DESC";
@@ -432,10 +323,8 @@ public class HospitalDatabase {
         }
         return list;
     }
+     // Saves a medical record — inserts if new, updates if already exists for this appointment.
 
-    /**
-     * Saves a medical record — inserts if new, updates if already exists for this appointment.
-     */
     public static void saveRecord(int appointmentId, String doctorId, String patientId,
                                   String diagnosis, String medicine, String description,
                                   String treatmentNotes, String followUpNote,
@@ -488,14 +377,10 @@ public class HospitalDatabase {
         }
     }
 
-    // =========================================================================
     // 6. DASHBOARD COUNTS
-    // =========================================================================
 
-    /**
-     * Returns the total number of rows in a given table.
-     * Used by Admin dashboard to show total doctors, patients, appointments.
-     */
+     //Used by Admin dashboard to show total doctors, patients, appointments.
+
     public static int getCount(String tableName) {
         String query = "SELECT COUNT(*) FROM " + tableName;
         try (Connection conn = DatabaseConnection.getConnection();
@@ -507,10 +392,8 @@ public class HospitalDatabase {
             return 0;
         }
     }
+     //Returns the count of distinct patients who have appointments with a doctor.
 
-    /**
-     * Returns the count of distinct patients who have appointments with a doctor.
-     */
     public static int getPatientCountForDoctor(String doctorId) {
         String query = "SELECT COUNT(DISTINCT patient_id) FROM appointment WHERE doctor_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -523,10 +406,8 @@ public class HospitalDatabase {
             return 0;
         }
     }
+     // Returns the count of appointments for a doctor.
 
-    /**
-     * Returns the count of appointments for a doctor.
-     */
     public static int getAppointmentCountForDoctor(String doctorId) {
         String query = "SELECT COUNT(*) FROM appointment WHERE doctor_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -539,10 +420,8 @@ public class HospitalDatabase {
             return 0;
         }
     }
+     // Returns the count of appointments for a patient.
 
-    /**
-     * Returns the count of appointments for a patient.
-     */
     public static int getAppointmentCountForPatient(String patientId) {
         String query = "SELECT COUNT(*) FROM appointment WHERE patient_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -555,10 +434,8 @@ public class HospitalDatabase {
             return 0;
         }
     }
+     // Returns the count of medical records for a patient.
 
-    /**
-     * Returns the count of medical records for a patient.
-     */
     public static int getRecordCountForPatient(String patientId) {
         String query = "SELECT COUNT(*) FROM medical_record WHERE patient_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -571,15 +448,8 @@ public class HospitalDatabase {
             return 0;
         }
     }
+    //Converts a ResultSet row into a Doctor object.
 
-    // =========================================================================
-    // PRIVATE HELPER METHODS
-    // =========================================================================
-
-    /**
-     * Converts a ResultSet row into a Doctor object.
-     * Called every time we read a doctor from the database.
-     */
     private static Doctor mapDoctor(ResultSet rs) throws SQLException {
         return new Doctor(
             rs.getString("doctor_id"),
@@ -592,10 +462,8 @@ public class HospitalDatabase {
             rs.getString("password")
         );
     }
+     // Converts a ResultSet row into a Patient object.
 
-    /**
-     * Converts a ResultSet row into a Patient object.
-     */
     private static Patient mapPatient(ResultSet rs) throws SQLException {
         return new Patient(
             rs.getString("patient_id"),
@@ -605,10 +473,8 @@ public class HospitalDatabase {
             rs.getString("password")
         );
     }
+     // Converts a ResultSet row into an Appointment object.
 
-    /**
-     * Converts a ResultSet row into an Appointment object.
-     */
     private static Appointment mapAppointment(ResultSet rs) throws SQLException {
         return new Appointment(
             rs.getInt("id"),
@@ -619,10 +485,7 @@ public class HospitalDatabase {
             rs.getString("status")
         );
     }
-
-    /**
-     * Converts a ResultSet row into a MedicalRecord object.
-     */
+     //Converts a ResultSet row into a MedicalRecord object.
     private static MedicalRecord mapMedicalRecord(ResultSet rs) throws SQLException {
         String nextAppt = rs.getString("next_appointment");
         return new MedicalRecord(
@@ -639,10 +502,6 @@ public class HospitalDatabase {
         );
     }
 
-    /**
-     * Sets a DATE parameter on a PreparedStatement.
-     * If the value is empty, sets NULL instead.
-     */
     private static void setDateOrNull(PreparedStatement ps, int index, String value) throws SQLException {
         if (value == null || value.trim().isEmpty()) {
             ps.setNull(index, Types.DATE);

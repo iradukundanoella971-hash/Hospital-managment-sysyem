@@ -7,13 +7,6 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
-/**
- * HomeController.java
- *
- * Controls the home page buttons.
- * Each button has an fx:id so we can inject it and get the Stage from it.
- */
 public class HomeController {
 
     @FXML private Button adminBtn;
@@ -51,12 +44,6 @@ public class HomeController {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Loads login.fxml, sets the role, then switches the scene.
-     * @param role   "admin", "doctor", or "patient"
-     * @param source the button clicked — used to get the current Stage
-     */
     private void openLogin(String role, Button source) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -65,7 +52,7 @@ public class HomeController {
                 )
             );
 
-            // Load FXML first — this creates the controller and injects all fields
+            //this creates the controller and injects all fields
             Scene scene = new Scene(loader.load(), 1100, 700);
 
             // Now tell the controller which role is logging in

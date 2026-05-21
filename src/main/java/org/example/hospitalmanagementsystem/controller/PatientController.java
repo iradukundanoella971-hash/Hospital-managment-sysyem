@@ -18,30 +18,30 @@ import java.sql.SQLException;
 
 public class PatientController {
 
-    // ── Panels ───────────────────────────────────────────────────────────────
+    // Panels
     @FXML private VBox dashboardPanel;
     @FXML private VBox doctorPanel;
     @FXML private VBox appointmentPanel;
     @FXML private VBox historyPanel;
 
-    // ── Dashboard ────────────────────────────────────────────────────────────
+    //Dashboard
     @FXML private Label welcomeLabel;
     @FXML private Label myAppointmentsLabel;
     @FXML private Label myRecordsLabel;
 
-    // ── Doctor TableView ─────────────────────────────────────────────────────
+    //Doctor TableView
     @FXML private TableView<Doctor>           doctorTable;
     @FXML private TableColumn<Doctor, String> colDoctorName;
     @FXML private TableColumn<Doctor, String> colDoctorSpec;
     @FXML private TableColumn<Doctor, String> colDoctorLocation;
 
-    // ── Appointment booking form ─────────────────────────────────────────────
+    // Appointment booking form
     @FXML private ComboBox<String> doctorCombo;
     @FXML private TextField        apptDateField;
     @FXML private TextField        apptTimeField;
     @FXML private Label            apptMessageLabel;
 
-    // ── Appointment TableView ────────────────────────────────────────────────
+    //Appointment TableView
     @FXML private TableView<Appointment>            appointmentTable;
     @FXML private TableColumn<Appointment, Integer> colApptId;
     @FXML private TableColumn<Appointment, String>  colApptDoctor;
@@ -49,7 +49,7 @@ public class PatientController {
     @FXML private TableColumn<Appointment, String>  colApptTime;
     @FXML private TableColumn<Appointment, String>  colApptStatus;
 
-    // ── Medical History TableView ────────────────────────────────────────────
+    //Medical History TableView
     @FXML private TableView<MedicalRecord>            historyTable;
     @FXML private TableColumn<MedicalRecord, Integer> colHistId;
     @FXML private TableColumn<MedicalRecord, String>  colHistDoctor;
@@ -72,7 +72,7 @@ public class PatientController {
         showDashboard();
     }
 
-    // ── Sidebar ──────────────────────────────────────────────────────────────
+    //Sidebar
 
     @FXML private void showDashboard() {
         showPanel(dashboardPanel);
@@ -108,7 +108,7 @@ public class PatientController {
         panel.setManaged(true);
     }
 
-    // ── Doctors ──────────────────────────────────────────────────────────────
+    //Doctors
 
     private void setupDoctorTable() {
         colDoctorName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -126,7 +126,7 @@ public class PatientController {
         }
     }
 
-    // ── Appointments ─────────────────────────────────────────────────────────
+    //Appointments
 
     private void loadDoctorCombo() {
         try {
@@ -193,7 +193,7 @@ public class PatientController {
         }
     }
 
-    // ── Medical History ──────────────────────────────────────────────────────
+    //Medical History
 
     private void setupHistoryTable() {
         colHistId.setCellValueFactory(new PropertyValueFactory<>("id"));

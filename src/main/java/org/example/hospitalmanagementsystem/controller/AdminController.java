@@ -19,19 +19,19 @@ import java.sql.SQLException;
 
 public class AdminController {
 
-    // ── Panels ───────────────────────────────────────────────────────────────
+    // Panels
     @FXML private VBox dashboardPanel;
     @FXML private VBox doctorPanel;
     @FXML private VBox patientPanel;
     @FXML private VBox appointmentPanel;
 
-    // ── Dashboard ────────────────────────────────────────────────────────────
+    //  Dashboard
     @FXML private Label welcomeLabel;
     @FXML private Label totalDoctorsLabel;
     @FXML private Label totalPatientsLabel;
     @FXML private Label totalAppointmentsLabel;
 
-    // ── Doctor form ──────────────────────────────────────────────────────────
+    // Doctor form
     @FXML private TextField     doctorIdField;
     @FXML private TextField     doctorNameField;
     @FXML private TextField     doctorPhoneField;
@@ -43,7 +43,7 @@ public class AdminController {
     @FXML private TextField     doctorSearchField;
     @FXML private Label         doctorMessageLabel;
 
-    // ── Doctor TableView ─────────────────────────────────────────────────────
+    // Doctor TableView
     @FXML private TableView<Doctor>            doctorTable;
     @FXML private TableColumn<Doctor, String>  colDoctorId;
     @FXML private TableColumn<Doctor, String>  colDoctorName;
@@ -53,14 +53,14 @@ public class AdminController {
     @FXML private TableColumn<Doctor, Integer> colDoctorAge;
     @FXML private TableColumn<Doctor, String>  colDoctorUsername;
 
-    // ── Patient TableView ────────────────────────────────────────────────────
+    // Patient TableView
     @FXML private TableView<Patient>           patientTable;
     @FXML private TableColumn<Patient, String> colPatientId;
     @FXML private TableColumn<Patient, String> colPatientName;
     @FXML private TableColumn<Patient, String> colPatientLocation;
     @FXML private TableColumn<Patient, String> colPatientUsername;
 
-    // ── Appointment TableView ────────────────────────────────────────────────
+    // Appointment TableView
     @FXML private TableView<Appointment>            appointmentTable;
     @FXML private TableColumn<Appointment, Integer> colApptId;
     @FXML private TableColumn<Appointment, String>  colApptDoctor;
@@ -77,8 +77,7 @@ public class AdminController {
         showDashboard();
     }
 
-    // ── Sidebar ──────────────────────────────────────────────────────────────
-
+    // Sidebar
     @FXML private void showDashboard() {
         showPanel(dashboardPanel);
         totalDoctorsLabel.setText(String.valueOf(HospitalDatabase.getCount("doctor")));
@@ -113,7 +112,7 @@ public class AdminController {
         panel.setManaged(true);
     }
 
-    // ── Doctor CRUD ──────────────────────────────────────────────────────────
+    // Doctor CRUD
 
     private void setupDoctorTable() {
         colDoctorId.setCellValueFactory(new PropertyValueFactory<>("doctorId"));
@@ -244,7 +243,7 @@ public class AdminController {
         doctorUsernameField.clear(); doctorPasswordField.clear();
     }
 
-    // ── Patient View ─────────────────────────────────────────────────────────
+    //Patient View
 
     private void setupPatientTable() {
         colPatientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
@@ -263,7 +262,7 @@ public class AdminController {
         }
     }
 
-    // ── Appointment View ─────────────────────────────────────────────────────
+    //Appointment View
 
     private void setupAppointmentTable() {
         colApptId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -284,7 +283,7 @@ public class AdminController {
         }
     }
 
-    // ── Logout ───────────────────────────────────────────────────────────────
+    // Logout
 
     @FXML
     private void handleLogout() {

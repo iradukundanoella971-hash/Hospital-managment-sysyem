@@ -79,7 +79,6 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-
     @FXML
     private void handleBack() {
         try {

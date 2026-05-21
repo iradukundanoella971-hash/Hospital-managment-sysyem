@@ -21,7 +21,6 @@ public class SignupController {
     @FXML private TextField     usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label         messageLabel;
-
     @FXML
     private void handleSignup() {
         String patientId = patientIdField.getText().trim();

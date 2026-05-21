@@ -18,24 +18,24 @@ import java.sql.SQLException;
 
 public class DoctorController {
 
-    // ── Panels ───────────────────────────────────────────────────────────────
+    //Panels
     @FXML private VBox dashboardPanel;
     @FXML private VBox patientPanel;
     @FXML private VBox appointmentPanel;
     @FXML private VBox medicalRecordPanel;
 
-    // ── Dashboard ────────────────────────────────────────────────────────────
+    //Dashboard
     @FXML private Label welcomeLabel;
     @FXML private Label totalPatientsLabel;
     @FXML private Label totalAppointmentsLabel;
 
-    // ── Patient TableView ────────────────────────────────────────────────────
+    //Patient TableView
     @FXML private TableView<Patient>           patientTable;
     @FXML private TableColumn<Patient, String> colPatientId;
     @FXML private TableColumn<Patient, String> colPatientName;
     @FXML private TableColumn<Patient, String> colPatientLocation;
 
-    // ── Appointment TableView ────────────────────────────────────────────────
+    //Appointment TableView
     @FXML private TableView<Appointment>            appointmentTable;
     @FXML private TableColumn<Appointment, Integer> colApptId;
     @FXML private TableColumn<Appointment, String>  colApptPatient;
@@ -43,7 +43,7 @@ public class DoctorController {
     @FXML private TableColumn<Appointment, String>  colApptTime;
     @FXML private TableColumn<Appointment, String>  colApptStatus;
 
-    // ── Medical Record form ──────────────────────────────────────────────────
+    //Medical Record form
     @FXML private ComboBox<String> appointmentCombo;
     @FXML private TextArea         diagnosisArea;
     @FXML private TextArea         medicineArea;
@@ -53,7 +53,7 @@ public class DoctorController {
     @FXML private TextField        nextAppointmentField;
     @FXML private Label            recordMessageLabel;
 
-    // ── Medical Record TableView ─────────────────────────────────────────────
+    //Medical Record TableView
     @FXML private TableView<MedicalRecord>            recordTable;
     @FXML private TableColumn<MedicalRecord, Integer> colRecordId;
     @FXML private TableColumn<MedicalRecord, Integer> colRecordApptId;
@@ -75,8 +75,7 @@ public class DoctorController {
         showDashboard();
     }
 
-    // ── Sidebar ──────────────────────────────────────────────────────────────
-
+    //Sidebar
     @FXML private void showDashboard() {
         showPanel(dashboardPanel);
         totalPatientsLabel.setText(String.valueOf(HospitalDatabase.getPatientCountForDoctor(doctorId)));
@@ -111,7 +110,7 @@ public class DoctorController {
         panel.setManaged(true);
     }
 
-    // ── Patients ─────────────────────────────────────────────────────────────
+    //Patients
 
     private void setupPatientTable() {
         colPatientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));

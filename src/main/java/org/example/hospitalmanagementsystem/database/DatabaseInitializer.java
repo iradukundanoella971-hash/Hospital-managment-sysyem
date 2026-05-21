@@ -6,21 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * DatabaseInitializer.java
- *
- * Creates all 5 tables when the app starts (only if they don't exist yet).
- * Also inserts a default admin account: username=admin, password=admin123
- *
- * Called once from MainApplication.java at startup.
- */
 public class DatabaseInitializer {
 
     public static void createTables() {
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
-
-            // 1. admin table
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS admin (
                     id       SERIAL PRIMARY KEY,
@@ -29,7 +19,7 @@ public class DatabaseInitializer {
                 )
             """);
 
-            // 2. doctor table
+
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS doctor (
                     id             SERIAL PRIMARY KEY,
@@ -43,8 +33,6 @@ public class DatabaseInitializer {
                     password       VARCHAR(100) NOT NULL
                 )
             """);
-
-            // 3. patient table
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS patient (
                     id         SERIAL PRIMARY KEY,
@@ -55,8 +43,6 @@ public class DatabaseInitializer {
                     password   VARCHAR(100) NOT NULL
                 )
             """);
-
-            // 4. appointment table
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS appointment (
                     id               SERIAL PRIMARY KEY,
@@ -68,8 +54,6 @@ public class DatabaseInitializer {
                     UNIQUE (doctor_id, appointment_date, appointment_time)
                 )
             """);
-
-            // 5. medical_record table
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS medical_record (
                     id              SERIAL PRIMARY KEY,

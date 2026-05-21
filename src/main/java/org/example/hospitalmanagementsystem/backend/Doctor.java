@@ -2,12 +2,6 @@ package org.example.hospitalmanagementsystem.backend;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-
-/**
- * Doctor.java
- * Model class for a Doctor.
- * Uses JavaFX Property types so TableView can display data automatically.
- */
 public class Doctor {
 
     private final SimpleStringProperty  doctorId;
